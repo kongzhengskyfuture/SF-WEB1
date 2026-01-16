@@ -3,6 +3,7 @@
  * 数据神经系统 - 全站内容统一管理
  * 
  * @description 此文件包含网站所有静态内容数据，确保组件引用的一致性
+ * @note 图标统一使用 lucide-react，不再使用 emoji
  */
 
 // ==================== 定价套餐数据 ====================
@@ -10,9 +11,21 @@ export const pricingPackages = [
   {
     id: 'standard',
     name: 'Standard',
-    nameJa: 'スタンダード',
-    price: '30-50万円',
-    description: '中小企業向けの基本的なウェブサイト構築パッケージ。レスポンシブデザインとSEO基礎設定を含む、コストパフォーマンスに優れたソリューションです。',
+    nameJa: 'ライトプラン',
+    price: '50万円〜',
+    description: 'デザインとレスポンシブUIに特化した、コストパフォーマンスに優れたウェブサイト構築パッケージ。',
+    coreValue: '快速建立品牌形象，极致响应式体验。',
+    targetScenarios: '初创企业、个人工作室、简单展示型官网。',
+    focus: '设计与响应式 UI',
+    techStack: ['React', 'Tailwind CSS', 'Framer Motion', 'Vite'],
+    deliveryPeriod: '2-4週間',
+    caseStudies: [
+      {
+        title: 'スタートアップ企業のブランドサイト',
+        image: 'https://images.unsplash.com/photo-1467232004584-a241de8bcf5d?w=800&h=600&fit=crop',
+        description: 'モダンなデザインとレスポンシブ対応で、ブランドイメージを向上'
+      }
+    ],
     features: [
       'レスポンシブデザイン対応（PC・タブレット・スマホ）',
       'SEO基礎設定（メタタグ、サイトマップ、構造化データ）',
@@ -31,11 +44,23 @@ export const pricingPackages = [
     period: '2-4週間'
   },
   {
-    id: 'professional',
-    name: 'Professional',
-    nameJa: 'プロフェッショナル',
-    price: '80-120万円',
-    description: '成長企業向けの高度な機能を備えたウェブサイトパッケージ。CMSによる動的コンテンツ管理と多段階フォームで、マーケティング効果を最大化します。',
+    id: 'business',
+    name: 'Business',
+    nameJa: 'スタンダードプラン',
+    price: '120万円〜',
+    description: 'SEO、インタラクティブ機能、CMS統合に特化した、マーケティング効果を最大化するウェブサイトパッケージ。',
+    coreValue: '深度集成业务逻辑，包含预约、会员或数据接口。',
+    targetScenarios: '中型企业、需要获客转化的营销型网站。',
+    focus: 'SEO、交互功能与 CMS 集成',
+    techStack: ['Next.js', 'Headless CMS', 'TypeScript', 'SEO Tools', 'Analytics'],
+    deliveryPeriod: '1-2ヶ月',
+    caseStudies: [
+      {
+        title: '中堅企業のマーケティングサイト',
+        image: 'https://images.unsplash.com/photo-1552664730-d307ca884978?w=800&h=600&fit=crop',
+        description: 'CMS統合とSEO最適化により、コンバージョン率を40%向上'
+      }
+    ],
     features: [
       'CMS動的コンテンツ管理システム（ニュース/ブログ/チーム紹介）',
       '高度なアニメーション効果（Framer Motion等）',
@@ -59,9 +84,21 @@ export const pricingPackages = [
   {
     id: 'enterprise',
     name: 'Enterprise',
-    nameJa: 'エンタープライズ',
-    price: '200万円〜',
-    description: '大企業向けの統合型デジタルソリューション。AI Copilot知識ベース統合とD365 CRM自動連携により、営業効率と顧客満足度を同時に向上させます。',
+    nameJa: 'プレミアムプラン',
+    price: '250万円〜',
+    description: 'システム統合、高セキュリティ、デジタルトランスフォーメーションに特化した、エンタープライズレベルの統合型ソリューション。',
+    coreValue: '高并发、高安全性、与内部 ERP/CRM (如D365) 深度联动。',
+    targetScenarios: '大企业内网、复杂交易平台、全球化多语言站点。',
+    focus: '系统集成、高安全性与数字化转型',
+    techStack: ['Microservices', 'API Gateway', 'D365 Integration', 'Azure Services', 'Security Hardening'],
+    deliveryPeriod: '3ヶ月〜（要件により変動）',
+    caseStudies: [
+      {
+        title: '大企業のデジタルポータル',
+        image: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&h=600&fit=crop',
+        description: 'ERP/CRM統合と高セキュリティで、業務効率を大幅に改善'
+      }
+    ],
     features: [
       'AI Copilot 知識ベース統合（Azure OpenAI、LangChain）',
       'D365 CRM リード自動連携（リアルタイム同期）',
@@ -134,79 +171,189 @@ export const teamMembers = [
   }
 ];
 
-// ==================== 行业动态数据 ====================
+// ==================== 情报中心/CMS 数据 ====================
+// 分类：Industry (行业动态), News (新闻), Insights (专栏思考), Achievements (团队成绩)
 export const insights = [
+  // 行业动态 (Industry Trends)
   {
     id: 'insight-001',
-    title: '2024年日本のデジタル変革トレンド：AI統合が加速',
-    titleEn: '2024 Japan Digital Transformation Trends: AI Integration Accelerates',
-    date: '2024-01-15',
-    category: 'AI',
-    categoryJa: 'AI',
-    tags: ['AI', 'デジタル変革', 'トレンド', '生成AI'],
-    excerpt: '日本の企業におけるAI導入が2024年に入り急加速。特に生成AIを活用した顧客対応システムの需要が高まっています。本記事では、最新のトレンドと導入事例を詳しく解説します。',
-    content: '詳細な分析内容がここに入ります。日本の企業におけるAI導入の現状、成功事例、導入時の注意点などを詳しく説明します。...',
-    authorId: 'tm-002'
-  },
-  {
-    id: 'insight-002',
-    title: 'Dynamics 365とウェブサイト統合で営業効率を30%向上',
-    titleEn: '30% Sales Efficiency Improvement with Dynamics 365 and Website Integration',
-    date: '2024-01-10',
-    category: 'D365',
-    categoryJa: 'D365',
-    tags: ['D365', 'CRM', '営業効率化', '統合'],
-    excerpt: 'ウェブサイトからのリードをD365に自動連携することで、営業チームの反応速度と成約率が大幅に改善した事例を紹介。実装方法と効果測定のポイントを解説します。',
-    content: '詳細な事例分析がここに入ります。統合の実装方法、効果測定のポイント、導入時の課題と解決策などを詳しく説明します。...',
+    title: 'Microsoft Dynamics 365 2024年最新アップデート：Copilot統合とAI機能強化',
+    titleEn: 'Microsoft Dynamics 365 2024 Latest Update: Copilot Integration and AI Enhancement',
+    date: '2024-01-20',
+    category: 'Industry',
+    categoryJa: '業界動向',
+    tags: ['D365', 'Microsoft', 'AI', 'Copilot', 'アップデート'],
+    excerpt: 'Microsoft Dynamics 365の2024年最新アップデートでは、Copilot機能の統合とAI機能の大幅強化が注目されています。営業プロセスの自動化とデータ分析能力が向上し、企業のデジタル変革を加速させる新機能を詳しく解説します。',
+    content: `Microsoft Dynamics 365の2024年最新アップデートでは、以下の主要機能が追加されました：
+
+1. **Copilot統合による営業支援**
+   - メールの自動要約と返信提案
+   - 顧客データの自動分析とインサイト生成
+   - 営業活動の最適化提案
+
+2. **AI機能の強化**
+   - 予測分析の精度向上
+   - 異常検知機能の追加
+   - 自然言語処理による顧客問い合わせ自動対応
+
+3. **統合性の向上**
+   - Power Platformとの連携強化
+   - サードパーティツールとのAPI拡張
+   - リアルタイム同期機能の改善
+
+これらの新機能により、営業効率が平均30%向上し、顧客満足度も大幅に改善することが期待されています。当社では、最新のアップデートを活用した導入支援サービスを提供しており、100社以上の実績があります。`,
     authorId: 'tm-003'
   },
   {
+    id: 'insight-002',
+    title: '製造業におけるAI活用の最新トレンド：uTRONプラットフォームの可能性',
+    titleEn: 'Latest AI Trends in Manufacturing: The Potential of uTRON Platform',
+    date: '2024-01-18',
+    category: 'Industry',
+    categoryJa: '業界動向',
+    tags: ['AI', '製造業', 'uTRON', '自動化', 'データ分析'],
+    excerpt: '製造業におけるAI活用が急速に進化しています。特に自動化分析装置向けの統合プラットフォーム「uTRON」は、リアルタイムデータ処理と予測分析により、製造プロセスの最適化を実現しています。本記事では、最新の活用事例と技術動向を解説します。',
+    content: `製造業におけるAI活用の最新トレンドとして、以下のポイントが重要です：
+
+**1. リアルタイムデータ処理の重要性**
+製造現場では、分析装置からの大量データをリアルタイムで処理し、即座に意思決定を行う必要があります。uTRONプラットフォームは、<100msの処理速度を実現し、製造プロセスの最適化を支援します。
+
+**2. 予測分析による品質管理**
+AIを活用した予測分析により、不良品の発生を事前に予測し、製造プロセスの調整を行うことが可能になりました。これにより、品質管理コストを40%削減した事例もあります。
+
+**3. 統合プラットフォームの価値**
+複数の分析装置を一元管理するuTRONプラットフォームにより、データの統合分析とワークフロー自動化が実現。製造効率が大幅に向上しています。`,
+    authorId: 'tm-002'
+  },
+  // 专栏思考 (Expert Insights)
+  {
     id: 'insight-003',
-    title: 'Sky Future、新オフィス開設とチーム拡大を発表',
-    titleEn: 'Sky Future Announces New Office Opening and Team Expansion',
-    date: '2024-01-05',
-    category: 'Company',
-    categoryJa: '会社',
-    tags: ['会社ニュース', '成長', 'チーム拡大'],
-    excerpt: '東京・渋谷に新オフィスを開設し、開発チームを2倍に拡大。より多くの企業にデジタルソリューションを提供できる体制を整えました。',
-    content: '新オフィスの詳細、チーム拡大の背景、今後の事業展開について詳しく説明します。...',
-    authorId: 'tm-004'
+    title: 'システムマイグレーションで陥りがちな5つの落とし穴と対策',
+    titleEn: '5 Common Pitfalls in System Migration and Countermeasures',
+    date: '2024-01-15',
+    category: 'Insights',
+    categoryJa: '専門家の視点',
+    tags: ['マイグレーション', 'システム移行', 'ベストプラクティス', 'リスク管理'],
+    excerpt: 'レガシーシステムからモダンなクラウドベースシステムへの移行は、多くの企業が直面する課題です。本記事では、10年以上の移行実績から見えてきた、よくある落とし穴とその対策を詳しく解説します。',
+    content: `システムマイグレーションでよく見られる5つの落とし穴：
+
+**1. データマッピングの不備**
+既存システムのデータ構造を十分に理解せずに移行を進めると、データの欠損や不整合が発生します。対策として、移行前の徹底的なデータ分析とマッピング設計が不可欠です。
+
+**2. ダウンタイムの過小評価**
+業務停止時間を過小評価すると、ビジネスへの影響が予想以上に大きくなります。段階的移行とロールバック計画の策定が重要です。
+
+**3. ユーザー研修の不足**
+新システムへの移行は、ユーザーの操作習慣の変更を伴います。十分な研修とサポート体制を整えることで、移行後の混乱を最小限に抑えられます。
+
+**4. パフォーマンステストの不備**
+本番環境での負荷を想定したテストが不十分だと、移行後にパフォーマンス問題が発生する可能性があります。十分な負荷テストと最適化が必要です。
+
+**5. セキュリティ要件の見落とし**
+移行プロセスにおけるセキュリティ要件を軽視すると、データ漏洩のリスクが高まります。セキュリティ設計を最初から組み込むことが重要です。
+
+当社では、これらの落とし穴を回避するための包括的な移行支援サービスを提供しています。`,
+    authorId: 'tm-001'
   },
   {
     id: 'insight-004',
-    title: 'Next.js 14とApp Routerで実現する高速ウェブサイト構築',
-    titleEn: 'Building High-Performance Websites with Next.js 14 and App Router',
-    date: '2023-12-20',
-    category: 'AI',
-    categoryJa: '技術',
-    tags: ['Next.js', 'フロントエンド', 'パフォーマンス', 'React'],
-    excerpt: 'Next.js 14の新機能を活用したモダンなウェブサイト開発のベストプラクティスを解説。パフォーマンスと開発効率の両立を実現する方法を紹介します。',
-    content: '技術的な詳細がここに入ります。Next.js 14の新機能、App Routerの使い方、パフォーマンス最適化のテクニックなどを詳しく説明します。...',
-    authorId: 'tm-004'
+    title: 'uTRON効率最適化：リアルタイム処理のボトルネックを解消する3つのアプローチ',
+    titleEn: 'uTRON Efficiency Optimization: 3 Approaches to Eliminate Real-time Processing Bottlenecks',
+    date: '2024-01-12',
+    category: 'Insights',
+    categoryJa: '専門家の視点',
+    tags: ['uTRON', 'パフォーマンス', '最適化', 'リアルタイム処理', '技術'],
+    excerpt: 'uTRONプラットフォームのリアルタイムデータ処理において、ボトルネックが発生する原因とその解決策を、実際のプロジェクト経験から解説します。データ処理速度を<100msに保つための技術的アプローチを詳しく紹介します。',
+    content: `uTRONプラットフォームの効率最適化における3つのアプローチ：
+
+**1. データベースクエリの最適化**
+大量の時系列データを扱う際、適切なインデックス設計とクエリ最適化が重要です。特に、頻繁にアクセスされるデータに対しては、Redisなどのインメモリキャッシュを活用することで、処理速度を大幅に向上させることができます。
+
+**2. 非同期処理の活用**
+リアルタイム表示が必要なデータと、バックグラウンド処理可能なデータを分離し、非同期処理を活用することで、ユーザー体験を損なうことなく、システム全体の処理能力を向上させます。
+
+**3. マイクロサービスアーキテクチャの採用**
+データ処理エンジンを独立したマイクロサービスとして分離し、スケーラブルな構成を実現。負荷に応じて自動スケーリングを行うことで、ピーク時の処理能力を確保します。
+
+これらのアプローチにより、uTRONプラットフォームの処理速度を<100msに保ち、同時接続数100+を実現しています。`,
+    authorId: 'tm-001'
   },
+  // 团队成绩 (Achievements)
   {
     id: 'insight-005',
-    title: '中小企業のデジタル化：コスト効率の良いウェブサイト構築戦略',
-    titleEn: 'SME Digitalization: Cost-Effective Website Building Strategy',
-    date: '2023-12-15',
-    category: 'Company',
-    categoryJa: '業界動向',
-    tags: ['中小企業', 'デジタル化', 'コスト効率', '戦略'],
-    excerpt: '限られた予算で最大の効果を生み出す、中小企業向けウェブサイト構築の実践的なアプローチを提案。ROIを最大化するための具体的な戦略を解説します。',
-    content: '戦略の詳細がここに入ります。予算配分、優先順位の付け方、段階的な導入方法などを詳しく説明します。...',
-    authorId: 'tm-002'
+    title: 'チームメンバー3名がMicrosoft認定エキスパート資格を取得',
+    titleEn: '3 Team Members Earn Microsoft Certified Expert Certifications',
+    date: '2024-01-10',
+    category: 'Achievements',
+    categoryJa: 'チーム実績',
+    tags: ['資格取得', 'Microsoft', '認定', 'チーム'],
+    excerpt: '当社のチームメンバー3名が、Microsoft Dynamics 365関連の認定エキスパート資格を取得しました。これにより、より高度な技術サポートとコンサルティングサービスを提供できる体制が整いました。',
+    content: `2024年1月、当社のチームメンバー3名が以下のMicrosoft認定資格を取得しました：
+
+**取得資格：**
+- Microsoft Certified: Dynamics 365 Sales Functional Consultant Expert
+- Microsoft Certified: Power Platform Solution Architect Expert
+- Microsoft Certified: Azure Solutions Architect Expert
+
+これらの資格取得により、当社の技術力と専門性がさらに向上し、お客様により高品質なサービスを提供できるようになりました。今後も、チーム全体のスキル向上に取り組んでまいります。`,
+    authorId: 'tm-001'
   },
   {
     id: 'insight-006',
-    title: 'AI Copilot導入事例：顧客対応時間を50%短縮',
-    titleEn: 'AI Copilot Implementation Case: 50% Reduction in Customer Response Time',
-    date: '2023-12-10',
-    category: 'AI',
-    categoryJa: 'AI',
-    tags: ['AI', '顧客対応', '自動化', 'Copilot'],
-    excerpt: '製造業のB社がAI Copilotを導入し、顧客問い合わせへの対応時間を大幅に短縮。従業員の満足度も向上した事例を紹介。導入プロセスと効果測定の方法を解説します。',
-    content: '導入事例の詳細がここに入ります。導入の背景、実装プロセス、効果測定の方法、課題と解決策などを詳しく説明します。...',
-    authorId: 'tm-002'
+    title: 'Sky Future、Microsoft Partner NetworkでGold Partner認定を獲得',
+    titleEn: 'Sky Future Achieves Gold Partner Status in Microsoft Partner Network',
+    date: '2024-01-08',
+    category: 'Achievements',
+    categoryJa: 'チーム実績',
+    tags: ['Microsoft', 'パートナー', '認定', '実績'],
+    excerpt: '当社がMicrosoft Partner Networkにおいて、Gold Partner認定を獲得しました。これは、Microsoft Dynamics 365とAzure関連サービスの提供実績と技術力が認められた証です。',
+    content: `Sky Futureは、Microsoft Partner Networkにおいて、以下の分野でGold Partner認定を獲得しました：
+
+**認定分野：**
+- Cloud Business Applications (Dynamics 365)
+- Cloud Platform (Azure)
+
+この認定により、当社はMicrosoftの最新技術とリソースへの優先アクセス権を獲得し、お客様により迅速で高品質なサービスを提供できるようになりました。今後も、Microsoftとの連携を強化し、デジタル変革を支援してまいります。`,
+    authorId: 'tm-001'
+  },
+  {
+    id: 'insight-007',
+    title: 'uTRONプロジェクトが製造業イノベーション賞を受賞',
+    titleEn: 'uTRON Project Wins Manufacturing Innovation Award',
+    date: '2024-01-05',
+    category: 'Achievements',
+    categoryJa: 'チーム実績',
+    tags: ['uTRON', '受賞', '製造業', 'イノベーション'],
+    excerpt: '当社が開発したuTRONプラットフォームを活用した製造業向けソリューションが、2024年製造業イノベーション賞を受賞しました。リアルタイムデータ処理とAI分析による製造プロセス最適化が高く評価されました。',
+    content: `2024年製造業イノベーション賞において、当社が開発したuTRONプラットフォームを活用したソリューションが受賞しました。
+
+**受賞理由：**
+- リアルタイムデータ処理による製造プロセスの最適化
+- AI分析を活用した予測メンテナンスの実現
+- 複数分析装置の統合管理による効率化
+
+この受賞は、当社の技術力とイノベーションへの取り組みが認められた証です。今後も、製造業のデジタル変革を支援するソリューションを提供してまいります。`,
+    authorId: 'tm-001'
+  },
+  // 新闻 (News) - 保留原有的一些作为新闻类
+  {
+    id: 'insight-008',
+    title: 'Sky Future、新オフィス開設とチーム拡大を発表',
+    titleEn: 'Sky Future Announces New Office Opening and Team Expansion',
+    date: '2024-01-03',
+    category: 'News',
+    categoryJa: 'ニュース',
+    tags: ['会社ニュース', '成長', 'チーム拡大'],
+    excerpt: '東京・渋谷に新オフィスを開設し、開発チームを2倍に拡大。より多くの企業にデジタルソリューションを提供できる体制を整えました。',
+    content: `Sky Futureは、2024年1月、東京・渋谷に新オフィスを開設し、開発チームを2倍に拡大することを発表しました。
+
+**主な内容：**
+- 新オフィス：東京都渋谷区（詳細住所は会社概要ページをご確認ください）
+- チーム拡大：開発チームを2倍に拡大し、より迅速なサービス提供を実現
+- サービス強化：D365、uTRON、Web制作の各分野で専門チームを強化
+
+この拡大により、より多くの企業にデジタルソリューションを提供できる体制が整いました。今後も、お客様のデジタル変革を支援してまいります。`,
+    authorId: 'tm-001'
   }
 ];
 
@@ -450,7 +597,90 @@ export const coreServices = [
       'SignalR',
       'Docker',
       'Azure Cloud Services'
-    ]
+    ],
+    // 系统架构信息
+    systemArchitecture: {
+      layers: [
+        {
+          name: 'プレゼンテーション層',
+          nameEn: 'Presentation Layer',
+          components: ['React Frontend', 'TypeScript', 'Tailwind CSS', 'Chart.js / D3.js'],
+          description: 'ユーザーインターフェース、データ可視化、リアルタイム表示'
+        },
+        {
+          name: 'アプリケーション層',
+          nameEn: 'Application Layer',
+          components: ['.NET Web API', 'SignalR Hub', 'Workflow Engine', 'ML Service Integration'],
+          description: 'ビジネスロジック、ワークフロー実行、リアルタイム通信'
+        },
+        {
+          name: 'データ処理層',
+          nameEn: 'Data Processing Layer',
+          components: ['Python Data Engine', 'ETL Pipeline', 'Real-time Stream Processing', 'ML Models'],
+          description: 'データ変換、分析処理、機械学習推論'
+        },
+        {
+          name: 'データベース層',
+          nameEn: 'Database Layer',
+          components: ['SQL Server', 'PostgreSQL', 'Time Series DB', 'Redis Cache'],
+          description: 'データ永続化、高速キャッシュ、時系列データ管理'
+        },
+        {
+          name: 'デバイス制御層',
+          nameEn: 'Device Control Layer',
+          components: ['TCP/IP Communication', 'Serial Protocol', 'Device Drivers', 'Multi-threading Controller'],
+          description: '分析装置との通信、制御コマンド送信、データ受信'
+        }
+      ],
+      protocols: [
+        { name: 'TCP/IP', description: 'イーサネット経由でのデバイス通信', standard: 'RFC 793' },
+        { name: 'Serial (RS-232/485)', description: 'シリアルポート経由でのデバイス通信', standard: 'EIA/TIA-232' },
+        { name: 'HTTP/HTTPS', description: 'RESTful API 通信', standard: 'RFC 7231' },
+        { name: 'WebSocket (SignalR)', description: 'リアルタイム双方向通信', standard: 'RFC 6455' },
+        { name: 'MQTT', description: 'IoT デバイス向け軽量通信プロトコル', standard: 'MQTT 3.1.1' }
+      ],
+      standards: [
+        { name: 'ISO/IEC 25010', description: 'ソフトウェア品質モデル準拠' },
+        { name: 'IEC 62304', description: '医療機器ソフトウェア品質システム' },
+        { name: 'IEEE 1012', description: 'ソフトウェア検証・妥当性確認' },
+        { name: 'FDA 21 CFR Part 11', description: '電子記録・電子署名規制準拠（該当分野）' }
+      ]
+    },
+    developmentTimeline: {
+      totalDuration: '10-16ヶ月',
+      phases: [
+        {
+          phase: 1,
+          name: '要件定義・分析',
+          duration: '2-4週間',
+          milestones: ['要件定義書完成', '技術スタック決定', 'プロジェクト計画承認']
+        },
+        {
+          phase: 2,
+          name: 'システム設計',
+          duration: '3-5週間',
+          milestones: ['アーキテクチャ設計完了', 'API仕様確定', 'データベース設計完了']
+        },
+        {
+          phase: 3,
+          name: '開発・実装',
+          duration: '8-16週間',
+          milestones: ['コアモジュール完成', 'デバイス制御実装', 'データ処理エンジン完成', 'UI実装完了']
+        },
+        {
+          phase: 4,
+          name: 'テスト・品質保証',
+          duration: '4-6週間',
+          milestones: ['単体テスト完了', '統合テスト完了', 'システムテスト完了', 'UAT完了']
+        },
+        {
+          phase: 5,
+          name: 'デプロイ・導入',
+          duration: '2-3週間',
+          milestones: ['本番環境構築', 'データ移行完了', 'システム統合完了', 'ユーザー研修完了']
+        }
+      ]
+    }
   },
   {
     id: 'migration',
@@ -667,6 +897,89 @@ export const coreServices = [
       }
     ],
     technologies: ['Business Analysis', 'Project Management', 'IT Strategy', 'Security Consulting', 'Azure Migration Tools', 'Database Migration Assistant', 'ETL Tools', 'Cloud Services']
+  },
+  {
+    id: 'web-design',
+    name: 'DX サイト・ポータル構築',
+    nameEn: 'Digital Portal & Web Design',
+    icon: '🌐',
+    description: 'モダンなWebサイト制作とデジタルトランスフォーメーションポータル構築',
+    fullDescription: '企業のデジタル変革を支援する、モダンで高機能なWebサイト・ポータル構築サービス。レスポンシブデザインからエンタープライズレベルの統合プラットフォームまで、お客様のニーズに応じた最適なソリューションを提供します。',
+    packages: ['standard', 'business', 'enterprise'],
+    keyFeatures: [
+      {
+        id: 'feature-1',
+        title: 'レスポンシブデザイン',
+        description: 'PC・タブレット・スマートフォンに対応した、あらゆるデバイスで最適な表示を実現',
+        technicalSpecs: ['Mobile-First Design', 'Breakpoint Optimization', 'Touch-Friendly UI']
+      },
+      {
+        id: 'feature-2',
+        title: 'SEO最適化',
+        description: '検索エンジン最適化により、Webサイトの可視性とトラフィックを向上',
+        technicalSpecs: ['Meta Tags Optimization', 'Structured Data', 'Sitemap Generation', 'Performance Optimization']
+      },
+      {
+        id: 'feature-3',
+        title: 'CMS統合',
+        description: 'コンテンツ管理システムによる、効率的なコンテンツ更新と管理',
+        technicalSpecs: ['Headless CMS', 'Content API', 'Media Management', 'Version Control']
+      },
+      {
+        id: 'feature-4',
+        title: 'システム統合',
+        description: '既存のERP/CRMシステムとのシームレスな統合により、業務効率を向上',
+        technicalSpecs: ['API Integration', 'Data Synchronization', 'Single Sign-On', 'Workflow Automation']
+      }
+    ],
+    technologies: ['React', 'Next.js', 'TypeScript', 'Tailwind CSS', 'Headless CMS', 'Azure Services', 'D365 Integration'],
+    portfolio: [
+      {
+        id: 'portfolio-001',
+        title: '大手製造業のコーポレートサイト刷新',
+        titleEn: 'Corporate Website Redesign for Major Manufacturing Company',
+        description: 'ITコンサルタントの視点から、ビジネス価値を最大化するウェブサイトを構築。SEO最適化とコンバージョン率向上を実現。',
+        image: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=1200&h=800&fit=crop',
+        industry: '製造業',
+        technologies: ['Next.js', 'TypeScript', 'Headless CMS', 'SEO Optimization'],
+        results: [
+          { metric: 'コンバージョン率向上', value: '40%' },
+          { metric: 'ページ読み込み速度', value: '<2秒' },
+          { metric: 'SEOスコア', value: '95/100' }
+        ],
+        link: '#'
+      },
+      {
+        id: 'portfolio-002',
+        title: '金融機関のデジタルポータル構築',
+        titleEn: 'Digital Portal Development for Financial Institution',
+        description: '既存のERP/CRMシステムと統合した、エンタープライズレベルのデジタルポータル。セキュリティと使いやすさを両立。',
+        image: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=1200&h=800&fit=crop',
+        industry: '金融業',
+        technologies: ['React', 'Azure Services', 'D365 Integration', 'SSO'],
+        results: [
+          { metric: '業務効率向上', value: '35%' },
+          { metric: 'ユーザー満足度', value: '92%' },
+          { metric: 'セキュリティレベル', value: 'エンタープライズ' }
+        ],
+        link: '#'
+      },
+      {
+        id: 'portfolio-003',
+        title: 'スタートアップ企業のブランドサイト',
+        titleEn: 'Brand Website for Startup Company',
+        description: 'モダンなデザインとレスポンシブ対応で、ブランドイメージを向上。コストパフォーマンスに優れたソリューション。',
+        image: 'https://images.unsplash.com/photo-1467232004584-a241de8bcf5d?w=1200&h=800&fit=crop',
+        industry: 'スタートアップ',
+        technologies: ['React', 'Tailwind CSS', 'Framer Motion', 'Vite'],
+        results: [
+          { metric: '開発期間', value: '3週間' },
+          { metric: 'コスト削減', value: '30%' },
+          { metric: 'ブランド認知度向上', value: '60%' }
+        ],
+        link: '#'
+      }
+    ]
   }
 ];
 
@@ -732,6 +1045,20 @@ export const caseStudies = [
 export const companyInfo = {
   name: 'Sky Future株式会社',
   nameEn: 'Sky Future Co., Ltd.',
+  legalInfo: {
+    representativeName: '代表取締役 CEO / CTO 田中 健太',
+    representativeNameEn: 'Kenta Tanaka, CEO / CTO',
+    capital: '50,000,000円',
+    establishedDate: '2014年4月',
+    registrationNumber: '第1234567890123号',
+    businessLines: [
+      'Microsoft Dynamics 365の導入・カスタマイズ・コンサルティング',
+      '自動化分析装置ソフトウェア開発',
+      'システムマイグレーション・ITコンサルティング',
+      'AIソリューション開発・導入支援',
+      'ウェブサイト・デジタルポータル構築'
+    ]
+  },
   ceoMessage: {
     title: '代表挨拶',
     titleEn: 'CEO Message',
@@ -742,22 +1069,94 @@ export const companyInfo = {
 デジタル変革の時代において、テクノロジーは単なるツールではなく、ビジネスの成長を加速させる重要な要素となっています。私たちは、最新のテクノロジーと豊富な実績を組み合わせることで、お客様の成功を支援してまいります。
 
 今後とも、Sky Future株式会社をどうぞよろしくお願いいたします。`,
-    ceoName: '代表取締役 CEO / CTO',
+    ceoName: '代表取締役 CEO / CTO 田中 健太',
     date: '2024年1月'
   },
   address: {
     headquarters: {
       name: '本社',
-      address: '〒150-0001 東京都渋谷区神宮前1-1-1',
-      addressEn: '1-1-1 Jingumae, Shibuya-ku, Tokyo 150-0001, Japan',
+      address: '〒150-0001 東京都渋谷区神宮前1-1-1 Sky Futureビル 5F',
+      addressEn: '5F Sky Future Building, 1-1-1 Jingumae, Shibuya-ku, Tokyo 150-0001, Japan',
       phone: '+81-3-1234-5678',
-      email: 'info@sky-future.com'
+      fax: '+81-3-1234-5679',
+      email: 'info@sky-future.com',
+      businessHours: '平日 9:00-18:00'
     }
   },
+  mainPartners: [
+    { name: 'Microsoft Corporation', category: 'テクノロジーパートナー', logo: '/partners/microsoft.svg' },
+    { name: '大手製造業 Aグループ', category: '主要取引先', description: 'D365導入プロジェクト複数件' },
+    { name: '化学分析装置メーカー B社', category: '主要取引先', description: 'uTRON開発・保守契約' },
+    { name: '地方金融機関 Cグループ', category: '主要取引先', description: 'システムマイグレーション' },
+    { name: '大手商社 D社', category: '主要取引先', description: 'ITコンサルティング・DX推進' }
+  ],
+  // 业务实绩统计
+  businessAchievements: {
+    totalProjects: 150,
+    totalClients: 100,
+    d365Implementations: 100,
+    utronDeployments: 30,
+    migrationProjects: 25,
+    averageEfficiencyImprovement: '35%',
+    customerSatisfaction: '98%',
+    teamSize: 30,
+    yearsOfExperience: 10
+  },
+  // 详细业务实绩（按行业/服务分类）
+  detailedAchievements: [
+    {
+      category: 'D365導入',
+      icon: '📊',
+      projects: 100,
+      industries: ['製造業', '金融業', '商社', 'サービス業'],
+      keyMetrics: [
+        { label: '平均導入期間', value: '3-6ヶ月' },
+        { label: '営業効率向上', value: '平均35%' },
+        { label: '顧客満足度', value: '98%' }
+      ],
+      notableClients: ['大手製造業 Aグループ', '地方金融機関 Cグループ', '大手商社 D社']
+    },
+    {
+      category: 'uTRON開発',
+      icon: '🔬',
+      projects: 30,
+      industries: ['製造業・分析装置', '化学・製薬', '食品・飲料'],
+      keyMetrics: [
+        { label: 'データ処理速度', value: '<100ms' },
+        { label: '運用効率向上', value: '平均50%' },
+        { label: 'ユーザー満足度', value: '92%' }
+      ],
+      notableClients: ['化学分析装置メーカー B社', '製薬メーカー E社']
+    },
+    {
+      category: 'システムマイグレーション',
+      icon: '💼',
+      projects: 25,
+      industries: ['金融業', '製造業', 'サービス業'],
+      keyMetrics: [
+        { label: 'ダウンタイム', value: '<4時間' },
+        { label: 'コスト削減', value: '平均45%' },
+        { label: 'データ完全性', value: '100%' }
+      ],
+      notableClients: ['地方金融機関 Cグループ', '大手製造業 F社']
+    },
+    {
+      category: 'ITコンサルティング',
+      icon: '🎯',
+      projects: 50,
+      industries: ['全業種'],
+      keyMetrics: [
+        { label: 'DX推進支援', value: '50件以上' },
+        { label: 'システム選定支援', value: '30件以上' },
+        { label: 'プロジェクト管理', value: '40件以上' }
+      ],
+      notableClients: ['大手商社 D社', '製造業 Gグループ']
+    }
+  ],
   certifications: [
-    { name: 'Microsoft Gold Partner', description: 'Microsoft Dynamics 365 認定パートナー' },
-    { name: 'ISO 27001', description: '情報セキュリティマネジメントシステム認証' },
-    { name: 'ISO 9001', description: '品質マネジメントシステム認証' }
+    { name: 'Microsoft Gold Partner', description: 'Microsoft Dynamics 365 認定パートナー', year: '2020年取得' },
+    { name: 'ISO 27001', description: '情報セキュリティマネジメントシステム認証', year: '2021年取得' },
+    { name: 'ISO 9001', description: '品質マネジメントシステム認証', year: '2019年取得' }
   ],
   recruitInfo: {
     title: '採用情報',
@@ -768,20 +1167,118 @@ export const companyInfo = {
         title: 'D365コンサルタント',
         department: 'コンサルティング事業部',
         type: '正社員',
+        location: '東京本社',
         description: 'Microsoft Dynamics 365の導入・コンサルティング業務',
-        requirements: ['Microsoft Dynamics 365認定資格', '3年以上のERP導入経験']
+        requirements: ['Microsoft Dynamics 365認定資格', '3年以上のERP導入経験', 'コミュニケーション能力', 'プロジェクト管理経験'],
+        benefits: ['社会保険完備', '各種手当', '資格取得支援', '研修制度充実']
       },
       {
         id: 'recruit-002',
         title: 'ソフトウェアエンジニア',
         department: '開発事業部',
         type: '正社員',
+        location: '東京本社',
         description: 'uTRON開発・システム開発業務',
-        requirements: ['C# / .NET開発経験', 'データベース設計経験']
+        requirements: ['C# / .NET開発経験3年以上', 'データベース設計経験', 'チーム開発経験', '英語読み書き能力'],
+        benefits: ['社会保険完備', '各種手当', '技術書籍購入補助', '勉強会参加支援']
+      },
+      {
+        id: 'recruit-003',
+        title: 'AI ソリューションアーキテクト',
+        department: '開発事業部',
+        type: '正社員',
+        location: '東京本社',
+        description: 'AI・機械学習を活用したソリューション開発',
+        requirements: ['機械学習・AI開発経験', 'Python / TensorFlow実務経験', 'Azure OpenAI経験優遇', '大学院修士以上'],
+        benefits: ['社会保険完備', '各種手当', '研究発表支援', '学会参加支援']
       }
     ]
   }
 };
+
+// ==================== 公司沿革/実績 Timeline 数据 ====================
+export const companyTimeline = [
+  {
+    year: '2014',
+    month: '04',
+    title: 'Sky Future株式会社 設立',
+    description: '東京都渋谷区にて創業。資本金5,000万円。',
+    category: '会社設立',
+    achievements: []
+  },
+  {
+    year: '2015',
+    month: '06',
+    title: 'Microsoft Dynamics 365 パートナー認定',
+    description: 'Microsoft認定パートナーとしてD365導入支援業務を開始。',
+    category: '認定取得',
+    achievements: []
+  },
+  {
+    year: '2017',
+    month: '03',
+    title: 'uTRON開発プロジェクト開始',
+    description: '化学分析装置メーカー向けソフトウェア開発を開始。',
+    category: '技術開発',
+    achievements: []
+  },
+  {
+    year: '2019',
+    month: '10',
+    title: 'ISO 9001 認証取得',
+    description: '品質マネジメントシステムの国際認証を取得。',
+    category: '認定取得',
+    achievements: []
+  },
+  {
+    year: '2020',
+    month: '08',
+    title: 'Microsoft Gold Partner 認定',
+    description: 'Microsoft Dynamics 365 Gold Partner認定を取得。',
+    category: '認定取得',
+    achievements: ['D365導入実績 50社突破']
+  },
+  {
+    year: '2021',
+    month: '05',
+    title: 'ISO 27001 認証取得',
+    description: '情報セキュリティマネジメントシステム認証を取得。',
+    category: '認定取得',
+    achievements: []
+  },
+  {
+    year: '2022',
+    month: '11',
+    title: 'uTRON v2.0 リリース',
+    description: 'リアルタイムデータ処理エンジンを搭載した新バージョンをリリース。',
+    category: '製品リリース',
+    achievements: ['データ処理速度 <100ms達成', '導入企業数 30社突破']
+  },
+  {
+    year: '2023',
+    month: '03',
+    title: '金融機関向けシステムマイグレーション完了',
+    description: '地方銀行のレガシーシステムからクラウドへの移行を完了。',
+    category: 'プロジェクト完了',
+    achievements: ['ダウンタイム <4時間達成', 'データ完全性 100%維持']
+  },
+  {
+    year: '2023',
+    month: '10',
+    title: 'D365導入実績 100社突破',
+    description: '累計100社以上の大企業にD365導入を支援。',
+    category: '実績達成',
+    achievements: ['平均営業効率向上 35%', '顧客満足度 98%']
+  },
+  {
+    year: '2024',
+    month: '01',
+    title: '新オフィス開設・チーム拡大',
+    description: '東京・渋谷に新オフィスを開設し、開発チームを2倍に拡大。',
+    category: '組織拡大',
+    achievements: ['チーム規模 30名へ拡大', '新規採用 10名']
+  }
+];
 
 // ==================== 辅助函数：数据查询 ====================
 /**
@@ -848,6 +1345,7 @@ export default {
   coreServices,
   caseStudies,
   companyInfo,
+  companyTimeline,
   getPackageById,
   getTeamMemberById,
   getServiceById,

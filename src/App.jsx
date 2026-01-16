@@ -1,5 +1,6 @@
 import { Routes, Route, useParams } from 'react-router-dom'
 import NavbarNew from './components/NavbarNew'
+import Footer from './components/Footer'
 import ScrollToTop from './components/ScrollToTop'
 import ServiceDetail from './components/ServiceDetail'
 import Contact from './pages/Contact'
@@ -7,23 +8,32 @@ import Home from './pages/Home'
 import Insights from './pages/Insights'
 import InsightDetail from './pages/InsightDetail'
 import AboutNew from './pages/AboutNew'
+import Recruit from './pages/Recruit'
+import Privacy from './pages/Privacy'
+import WebDesignPricing from './pages/WebDesignPricing'
+import WebDesignServiceDetail from './pages/WebDesignServiceDetail'
 import { getServiceById } from './data/siteContent'
 
 function App() {
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen flex flex-col">
       <ScrollToTop />
       <NavbarNew />
-      <main>
+      <main className="flex-1">
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/insights" element={<Insights />} />
           <Route path="/insights/:insightId" element={<InsightDetail />} />
           <Route path="/team" element={<AboutNew />} />
+          <Route path="/recruit" element={<Recruit />} />
+          <Route path="/privacy" element={<Privacy />} />
+          <Route path="/webdesign" element={<WebDesignPricing />} />
+          <Route path="/services/web-design" element={<WebDesignServiceDetail />} />
           <Route path="/services/:serviceId" element={<ServiceDetailWrapper />} />
         </Routes>
       </main>
+      <Footer />
     </div>
   )
 }

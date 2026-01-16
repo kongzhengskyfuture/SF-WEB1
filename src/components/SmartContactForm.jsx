@@ -2,6 +2,8 @@
 
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { LayoutGrid, Cpu, Monitor, ShieldCheck, CheckCircle2 } from 'lucide-react';
+import { Link } from 'react-router-dom';
 import { pricingPackages } from '../data/siteContent';
 
 /**
@@ -10,7 +12,7 @@ import { pricingPackages } from '../data/siteContent';
  * 
  * @param {Object} props
  * @param {string} props.presetService - 预设服务类型 (d365, ai, dev)
- * @param {string} props.presetPackage - 预设套餐ID (standard, professional, enterprise)
+ * @param {string} props.presetPackage - 预设套餐ID (standard, business, enterprise)
  * @param {Function} props.onSubmit - 提交回调函数
  * @param {Function} props.onClose - 关闭回调（Modal模式）
  * @param {boolean} props.isModal - 是否为Modal模式
@@ -27,6 +29,7 @@ export default function SmartContactForm({
   // 修正逻辑：始终从第一步开始，presetService 仅作为默认选中项，不跳过步骤
   // 无论何时打开表单，都应该从 Step 1 开始，让用户看到并确认选择
   const [currentStep, setCurrentStep] = useState(1);
+  const [privacyAgreed, setPrivacyAgreed] = useState(false);
   const [formData, setFormData] = useState({
     serviceType: presetService || null, // 如果提供了 presetService，作为默认选中项
     // Step 2 数据
@@ -48,6 +51,7 @@ export default function SmartContactForm({
     requestDiagnosis: autoRequestDiagnosis // 根据入口自动设置
   });
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [submissionId, setSubmissionId] = useState(null);
 
   // 当 presetService 变化时更新表单数据（仅更新选中项，不跳转步骤）
   useEffect(() => {
@@ -68,19 +72,19 @@ export default function SmartContactForm({
     {
       id: 'd365',
       nameJa: 'Dynamics 365 導入・カスタマイズ',
-      icon: '📊',
+      icon: LayoutGrid,
       description: 'CRM・営業・マーケティングの統合ソリューション'
     },
     {
       id: 'ai',
       nameJa: 'AI 活用コンサルティング',
-      icon: '🤖',
+      icon: Cpu,
       description: '生成AI・チャットボット・知識ベース統合'
     },
     {
       id: 'dev',
       nameJa: 'DXポータル/サイト構築',
-      icon: '🌐',
+      icon: Monitor,
       description: 'モダンなウェブサイト・CMS・統合開発'
     }
   ];
@@ -88,7 +92,10 @@ export default function SmartContactForm({
   // 处理Step 1选择
   const handleServiceSelect = (serviceId) => {
     setFormData(prev => ({ ...prev, serviceType: serviceId }));
-    setCurrentStep(2);
+    // 只有在隐私协议已同意的情况下才能进入下一步
+    if (privacyAgreed && serviceId) {
+      setCurrentStep(2);
+    }
   };
 
   // 处理Step 2数据更新
@@ -119,7 +126,7 @@ export default function SmartContactForm({
   // 验证当前步骤
   const validateStep = () => {
     if (currentStep === 1) {
-      return formData.serviceType !== null;
+      return formData.serviceType !== null && privacyAgreed;
     } else if (currentStep === 2) {
       if (formData.serviceType === 'd365') {
         return formData.d365Data.currentSystem && formData.d365Data.userCount;
@@ -130,24 +137,40 @@ export default function SmartContactForm({
       }
     } else if (currentStep === 3) {
       return formData.companyName && formData.name && formData.email && formData.phone;
+    } else if (currentStep === 4) {
+      return true; // 确认画面不需要验证
     }
     return false;
   };
 
-  // 提交表单
-  const handleSubmit = (e) => {
+  // 生成提交编号
+  const generateSubmissionId = () => {
+    const timestamp = Date.now();
+    const random = Math.floor(Math.random() * 1000);
+    return `SF-${timestamp.toString().slice(-8)}-${random.toString().padStart(3, '0')}`;
+  };
+
+  // 提交表单（最终提交）
+  const handleFinalSubmit = (e) => {
     e.preventDefault();
+    setIsSubmitted(true);
+    const id = generateSubmissionId();
+    setSubmissionId(id);
+    if (onSubmit) {
+      onSubmit(formData);
+    }
+    // 5秒后自动关闭（如果是Modal模式）
+    if (isModal && onClose) {
+      setTimeout(() => {
+        onClose();
+      }, 5000);
+    }
+  };
+
+  // 跳转到确认画面
+  const handleGoToConfirmation = () => {
     if (validateStep()) {
-      setIsSubmitted(true);
-      if (onSubmit) {
-        onSubmit(formData);
-      }
-      // 3秒后自动关闭（如果是Modal模式）
-      if (isModal && onClose) {
-        setTimeout(() => {
-          onClose();
-        }, 5000);
-      }
+      setCurrentStep(4);
     }
   };
 
@@ -175,31 +198,61 @@ export default function SmartContactForm({
   return (
     <div className={`${isModal ? 'max-w-4xl mx-auto' : 'max-w-3xl mx-auto'} bg-white rounded-2xl shadow-xl overflow-hidden`}>
       {!isSubmitted ? (
-        <form onSubmit={handleSubmit} className="p-8 md:p-10">
-          {/* 进度指示器 */}
-          <div className="mb-8">
-            <div className="flex items-center justify-center mb-4">
-              <div className="flex items-center space-x-2 text-sm">
-                <span className={`font-semibold ${currentStep >= 1 ? 'text-sky-600' : 'text-slate-400'}`}>
-                  1. サービス選択
-                </span>
-                <span className="text-slate-300">></span>
-                <span className={`font-semibold ${currentStep >= 2 ? 'text-sky-600' : 'text-slate-400'}`}>
-                  2. 詳細ヒアリング
-                </span>
-                <span className="text-slate-300">></span>
-                <span className={`font-semibold ${currentStep >= 3 ? 'text-sky-600' : 'text-slate-400'}`}>
-                  3. 基本情報
-                </span>
+        <form onSubmit={(e) => e.preventDefault()} className="p-8 md:p-10">
+          {/* 隐私保护提示框 */}
+          {currentStep === 1 && (
+            <motion.div
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="mb-6 p-4 bg-slate-50 border border-slate-200 rounded-lg"
+            >
+              <div className="flex items-start space-x-3">
+                <ShieldCheck className="w-5 h-5 text-slate-600 flex-shrink-0 mt-0.5" strokeWidth={1.25} />
+                <div className="flex-1">
+                  <p className="text-sm text-slate-700 leading-relaxed mb-3">
+                    ご入力いただいた個人情報は、お問い合わせへの回答およびサービス提供の範囲内でのみ利用いたします。送信前に
+                    <Link to="/privacy" className="text-slate-900 underline hover:text-slate-700" target="_blank">
+                      個人情報保護方針
+                    </Link>
+                    をご確認ください。
+                  </p>
+                  <label className="flex items-center space-x-2 cursor-pointer">
+                    <input
+                      type="checkbox"
+                      checked={privacyAgreed}
+                      onChange={(e) => setPrivacyAgreed(e.target.checked)}
+                      className="w-4 h-4 text-slate-600 border-slate-300 rounded focus:ring-slate-400"
+                      required
+                    />
+                    <span className="text-sm font-medium text-slate-900">
+                      個人情報保護方針に同意する <span className="text-red-500">*</span>
+                    </span>
+                  </label>
+                </div>
               </div>
-            </div>
-            <div className="w-full bg-slate-200 rounded-full h-2">
-              <motion.div
-                className="bg-gradient-to-r from-sky-500 to-emerald-500 h-2 rounded-full"
-                initial={{ width: '0%' }}
-                animate={{ width: `${(currentStep / 3) * 100}%` }}
-                transition={{ duration: 0.3 }}
-              />
+            </motion.div>
+          )}
+
+          {/* 进度指示器 - 极简版 */}
+          <div className="mb-8 pb-6 border-b border-slate-200">
+            <div className="flex items-center justify-center space-x-4 text-xs">
+              <span className={`font-medium ${currentStep >= 1 ? 'text-slate-900' : 'text-slate-400'}`}>
+                1. サービス選択
+              </span>
+              <span className="text-slate-300">/</span>
+              <span className={`font-medium ${currentStep >= 2 ? 'text-slate-900' : 'text-slate-400'}`}>
+                2. 詳細ヒアリング
+              </span>
+              <span className="text-slate-300">/</span>
+              <span className={`font-medium ${currentStep >= 3 ? 'text-slate-900' : 'text-slate-400'}`}>
+                3. 基本情報
+              </span>
+              {currentStep >= 4 && (
+                <>
+                  <span className="text-slate-300">/</span>
+                  <span className="font-medium text-slate-900">4. 確認</span>
+                </>
+              )}
             </div>
           </div>
 
@@ -220,28 +273,31 @@ export default function SmartContactForm({
                   お客様のニーズに最適なソリューションをご提案いたします
                 </p>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                  {serviceOptions.map((option) => (
-                    <motion.button
-                      key={option.id}
-                      type="button"
-                      onClick={() => handleServiceSelect(option.id)}
-                      className={`p-6 rounded-xl border-2 transition-all text-left ${
-                        formData.serviceType === option.id
-                          ? 'border-sky-500 bg-sky-50 ring-4 ring-sky-200 ring-offset-2 shadow-lg'
-                          : 'border-slate-200 hover:border-sky-300 hover:shadow-md'
-                      }`}
-                      whileHover={{ scale: 1.02 }}
-                      whileTap={{ scale: 0.98 }}
-                    >
-                      <div className="text-4xl mb-3">{option.icon}</div>
-                      <h3 className="font-bold text-slate-900 mb-2 text-lg">
-                        {option.nameJa}
-                      </h3>
-                      <p className="text-xs text-slate-500 leading-relaxed">
-                        {option.description}
-                      </p>
-                    </motion.button>
-                  ))}
+                  {serviceOptions.map((option) => {
+                    const IconComponent = option.icon;
+                    return (
+                      <motion.button
+                        key={option.id}
+                        type="button"
+                        onClick={() => handleServiceSelect(option.id)}
+                        className={`p-6 rounded-xl border-2 transition-all text-left ${
+                          formData.serviceType === option.id
+                            ? 'border-slate-400 bg-slate-50 ring-2 ring-slate-200 ring-offset-1 shadow-md'
+                            : 'border-slate-200 hover:border-slate-300 hover:shadow-md'
+                        }`}
+                        whileHover={{ scale: 1.02 }}
+                        whileTap={{ scale: 0.98 }}
+                      >
+                        <IconComponent className="w-4 h-4 text-slate-600 mb-3" strokeWidth={1.25} />
+                        <h3 className="font-bold text-slate-900 mb-2 text-lg">
+                          {option.nameJa}
+                        </h3>
+                        <p className="text-xs text-slate-500 leading-relaxed">
+                          {option.description}
+                        </p>
+                      </motion.button>
+                    );
+                  })}
                 </div>
               </motion.div>
             )}
@@ -290,8 +346,8 @@ export default function SmartContactForm({
                             onClick={() => handleStep2Update('currentSystem', option)}
                             className={`p-4 rounded-lg border-2 transition-all ${
                               formData.d365Data.currentSystem === option
-                                ? 'border-sky-500 bg-sky-50 ring-4 ring-sky-200 ring-offset-2 shadow-lg'
-                                : 'border-slate-200 hover:border-sky-300'
+                                ? 'border-slate-400 bg-slate-50 ring-2 ring-slate-200 ring-offset-1 shadow-md'
+                                : 'border-slate-200 hover:border-slate-300'
                             }`}
                           >
                             {option}
@@ -311,8 +367,8 @@ export default function SmartContactForm({
                             onClick={() => handleStep2Update('userCount', option)}
                             className={`p-4 rounded-lg border-2 transition-all ${
                               formData.d365Data.userCount === option
-                                ? 'border-sky-500 bg-sky-50 ring-4 ring-sky-200 ring-offset-2 shadow-lg'
-                                : 'border-slate-200 hover:border-sky-300'
+                                ? 'border-slate-400 bg-slate-50 ring-2 ring-slate-200 ring-offset-1 shadow-md'
+                                : 'border-slate-200 hover:border-slate-300'
                             }`}
                           >
                             {option}
@@ -337,8 +393,8 @@ export default function SmartContactForm({
                           onClick={() => handleStep2Update('mainChallenge', option)}
                           className={`p-4 rounded-lg border-2 transition-all text-left ${
                             formData.aiData.mainChallenge === option
-                              ? 'border-sky-500 bg-sky-50 ring-4 ring-sky-200 ring-offset-2 shadow-lg'
-                              : 'border-slate-200 hover:border-sky-300'
+                              ? 'border-slate-400 bg-slate-50 ring-2 ring-slate-200 ring-offset-1 shadow-md'
+                              : 'border-slate-200 hover:border-slate-300'
                           }`}
                         >
                           {option}
@@ -362,8 +418,8 @@ export default function SmartContactForm({
                           onClick={() => handleStep2Update('budgetRange', pkg.id)}
                           className={`w-full p-4 rounded-lg border-2 transition-all text-left ${
                             formData.devData.budgetRange === pkg.id
-                              ? 'border-sky-500 bg-sky-50 ring-4 ring-sky-200 ring-offset-2 shadow-lg'
-                              : 'border-slate-200 hover:border-sky-300'
+                              ? 'border-slate-400 bg-slate-50 ring-2 ring-slate-200 ring-offset-1 shadow-md'
+                              : 'border-slate-200 hover:border-slate-300'
                           }`}
                         >
                           <div className="flex items-center justify-between">
@@ -371,7 +427,7 @@ export default function SmartContactForm({
                               <div className="font-bold text-slate-900">{pkg.nameJa}</div>
                               <div className="text-sm text-slate-600 mt-1">{pkg.price}</div>
                             </div>
-                            <div className="text-sky-600 font-semibold">
+                            <div className="text-slate-600 font-semibold">
                               {formData.devData.budgetRange === pkg.id && '✓'}
                             </div>
                           </div>
@@ -386,7 +442,7 @@ export default function SmartContactForm({
                     type="button"
                     onClick={() => setCurrentStep(3)}
                     disabled={!validateStep()}
-                    className="px-6 py-3 bg-sky-600 text-white rounded-lg font-semibold hover:bg-sky-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="px-6 py-3 bg-slate-900 text-white rounded-lg font-semibold hover:bg-slate-800 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                   >
                     次へ →
                   </button>
@@ -480,7 +536,7 @@ export default function SmartContactForm({
                       id="requestDiagnosis"
                       checked={formData.requestDiagnosis}
                       onChange={(e) => handleStep3Update('requestDiagnosis', e.target.checked)}
-                      className="mt-1 w-5 h-5 text-sky-600 border-slate-300 rounded focus:ring-sky-500"
+                      className="mt-1 w-5 h-5 text-slate-600 border-slate-300 rounded focus:ring-slate-400"
                     />
                     <label htmlFor="requestDiagnosis" className="flex-1 text-sm text-slate-700 cursor-pointer">
                       <span className="font-semibold">30分間の無料オンライン診断</span>（Zoom/Teams）を希望する
@@ -490,11 +546,131 @@ export default function SmartContactForm({
 
                 <div className="mt-8 flex justify-end">
                   <button
-                    type="submit"
+                    type="button"
+                    onClick={handleGoToConfirmation}
                     disabled={!validateStep()}
-                    className="px-8 py-3 bg-sky-600 text-white rounded-lg font-semibold hover:bg-sky-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed shadow-lg hover:shadow-xl"
+                    className="px-8 py-3 bg-slate-900 text-white rounded-lg font-semibold hover:bg-slate-800 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                   >
-                    送信する
+                    確認画面へ →
+                  </button>
+                </div>
+              </motion.div>
+            )}
+
+            {/* Step 4: 确认画面 */}
+            {currentStep === 4 && (
+              <motion.div
+                key="step4"
+                initial={{ opacity: 0, x: 20 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: -20 }}
+                transition={{ duration: 0.3 }}
+              >
+                <div className="flex items-center justify-between mb-6">
+                  <div>
+                    <h2 className="text-2xl font-bold text-slate-900 mb-2">
+                      入力内容の確認
+                    </h2>
+                    <p className="text-slate-600">
+                      送信前に内容をご確認ください
+                    </p>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => setCurrentStep(3)}
+                    className="text-sm text-slate-500 hover:text-slate-700"
+                  >
+                    戻る
+                  </button>
+                </div>
+
+                {/* 确认内容预览 */}
+                <div className="bg-slate-50 rounded-lg border border-slate-200 p-6 space-y-4 mb-6">
+                  {/* 服务类型 */}
+                  <div className="pb-4 border-b border-slate-200">
+                    <div className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-2">
+                      サービス
+                    </div>
+                    <div className="text-sm text-slate-900">
+                      {serviceOptions.find(s => s.id === formData.serviceType)?.nameJa || '-'}
+                    </div>
+                  </div>
+
+                  {/* 详细信息 */}
+                  {formData.serviceType === 'd365' && (
+                    <div className="pb-4 border-b border-slate-200">
+                      <div className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-2">
+                        詳細情報
+                      </div>
+                      <div className="space-y-1 text-sm text-slate-700">
+                        <div>現在のシステム: {formData.d365Data.currentSystem || '-'}</div>
+                        <div>利用予定人数: {formData.d365Data.userCount || '-'}</div>
+                      </div>
+                    </div>
+                  )}
+
+                  {formData.serviceType === 'ai' && (
+                    <div className="pb-4 border-b border-slate-200">
+                      <div className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-2">
+                        詳細情報
+                      </div>
+                      <div className="text-sm text-slate-700">
+                        主な課題: {formData.aiData.mainChallenge || '-'}
+                      </div>
+                    </div>
+                  )}
+
+                  {formData.serviceType === 'dev' && (
+                    <div className="pb-4 border-b border-slate-200">
+                      <div className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-2">
+                        詳細情報
+                      </div>
+                      <div className="text-sm text-slate-700">
+                        ご予算の目安: {pricingPackages.find(p => p.id === formData.devData.budgetRange)?.nameJa || '-'}
+                      </div>
+                    </div>
+                  )}
+
+                  {/* 基本信息 */}
+                  <div className="pb-4 border-b border-slate-200">
+                    <div className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-2">
+                      基本情報
+                    </div>
+                    <div className="space-y-1 text-sm text-slate-700">
+                      <div>会社名: {formData.companyName || '-'}</div>
+                      <div>お名前: {formData.name || '-'}</div>
+                      <div>メールアドレス: {formData.email || '-'}</div>
+                      <div>電話番号: {formData.phone || '-'}</div>
+                    </div>
+                  </div>
+
+                  {/* 免费诊断 */}
+                  {formData.requestDiagnosis && (
+                    <div>
+                      <div className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-2">
+                        オプション
+                      </div>
+                      <div className="text-sm text-slate-700">
+                        30分間の無料オンライン診断を希望
+                      </div>
+                    </div>
+                  )}
+                </div>
+
+                <div className="flex justify-between">
+                  <button
+                    type="button"
+                    onClick={() => setCurrentStep(3)}
+                    className="px-6 py-3 bg-white border-2 border-slate-300 text-slate-700 rounded-lg font-semibold hover:bg-slate-50 transition-colors"
+                  >
+                    修正する
+                  </button>
+                  <button
+                    type="button"
+                    onClick={handleFinalSubmit}
+                    className="px-8 py-3 bg-slate-900 text-white rounded-lg font-semibold hover:bg-slate-800 transition-colors shadow-lg hover:shadow-xl"
+                  >
+                    この内容で送信する
                   </button>
                 </div>
               </motion.div>
@@ -506,44 +682,90 @@ export default function SmartContactForm({
         <motion.div
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.4 }}
           className="p-8 md:p-10 text-center"
         >
           <motion.div
-            initial={{ scale: 0 }}
-            animate={{ scale: 1 }}
-            transition={{ delay: 0.2, type: 'spring', stiffness: 200 }}
-            className="w-20 h-20 bg-gradient-to-br from-emerald-400 to-sky-500 rounded-full flex items-center justify-center mx-auto mb-6"
+            initial={{ scale: 0, rotate: -180 }}
+            animate={{ scale: 1, rotate: 0 }}
+            transition={{ delay: 0.2, type: 'spring', stiffness: 200, damping: 15 }}
+            className="w-20 h-20 bg-slate-900 rounded-full flex items-center justify-center mx-auto mb-6"
           >
-            <svg className="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-            </svg>
+            <CheckCircle2 className="w-10 h-10 text-white" strokeWidth={1.25} />
           </motion.div>
           
-          <h2 className="text-3xl font-bold text-slate-900 mb-4">
+          <motion.h2
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.3 }}
+            className="text-3xl font-bold text-slate-900 mb-4"
+          >
             {getThankYouMessage().title}
-          </h2>
-          <p className="text-lg text-slate-600 mb-2">
+          </motion.h2>
+          
+          <motion.p
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.4 }}
+            className="text-lg text-slate-600 mb-4"
+          >
             {getThankYouMessage().message}
-          </p>
-          {getThankYouMessage().downloadText && (
-            <p className="text-slate-500 mb-6">
-              {getThankYouMessage().downloadText}
-            </p>
+          </motion.p>
+
+          {submissionId && (
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.5 }}
+              className="mb-6"
+            >
+              <div className="inline-block px-4 py-2 bg-slate-50 border border-slate-200 rounded-lg">
+                <div className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-1">
+                  送信番号
+                </div>
+                <div className="text-sm font-mono font-bold text-slate-900">
+                  {submissionId}
+                </div>
+              </div>
+            </motion.div>
           )}
+
+          <motion.p
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.6 }}
+            className="text-sm text-slate-500 mb-6"
+          >
+            担当者より1-2営業日以内にご連絡いたします。
+          </motion.p>
           
           {getThankYouMessage().downloadText && (
-            <a
-              href="#"
-              className="inline-block px-6 py-3 bg-sky-600 text-white rounded-lg font-semibold hover:bg-sky-700 transition-colors shadow-lg hover:shadow-xl"
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.7 }}
             >
-              資料をダウンロード
-            </a>
+              <p className="text-slate-500 mb-4">
+                {getThankYouMessage().downloadText}
+              </p>
+              <a
+                href="#"
+                className="inline-block px-6 py-3 bg-slate-900 text-white rounded-lg font-semibold hover:bg-slate-800 transition-colors"
+              >
+                資料をダウンロード
+              </a>
+            </motion.div>
           )}
           
           {isModal && (
-            <p className="text-sm text-slate-400 mt-6">
+            <motion.p
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.8 }}
+              className="text-sm text-slate-400 mt-6"
+            >
               このウィンドウは5秒後に自動的に閉じます
-            </p>
+            </motion.p>
           )}
         </motion.div>
       )}

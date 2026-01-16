@@ -72,7 +72,7 @@ export default function InsightDetail() {
     <div className="min-h-screen bg-slate-50">
       {/* 阅读进度条 */}
       <motion.div
-        className="fixed top-0 left-0 right-0 h-1 bg-gradient-to-r from-sky-500 to-emerald-500 origin-left z-50"
+        className="fixed top-0 left-0 right-0 h-0.5 bg-slate-300 origin-left z-50"
         style={{ scaleX }}
       />
 
@@ -90,17 +90,15 @@ export default function InsightDetail() {
             >
               <ol className="flex items-center space-x-2 text-sm text-slate-600">
                 <li>
-                  <Link to="/" onClick={() => window.scrollTo(0, 0)} className="hover:text-sky-600 transition-colors">
+                  <Link to="/" onClick={() => window.scrollTo(0, 0)} className="hover:text-slate-700 transition-colors">
                     ホーム
                   </Link>
                 </li>
                 <li>
-                  <svg className="w-4 h-4 mx-2 text-slate-400" fill="currentColor" viewBox="0 0 20 20">
-                    <path fillRule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clipRule="evenodd" />
-                  </svg>
+                  <span className="text-slate-400 mx-2">/</span>
                 </li>
                 <li>
-                  <Link to="/insights" onClick={() => window.scrollTo(0, 0)} className="hover:text-sky-600 transition-colors">
+                  <Link to="/insights" onClick={() => window.scrollTo(0, 0)} className="hover:text-slate-700 transition-colors">
                     インサイト
                   </Link>
                 </li>
@@ -123,7 +121,7 @@ export default function InsightDetail() {
               className="mb-8"
             >
               <div className="flex items-center space-x-3 mb-4">
-                <span className="inline-block px-3 py-1 text-xs font-bold text-sky-600 bg-sky-100 rounded-full">
+                <span className="inline-block px-3 py-1 text-xs font-bold text-slate-700 bg-slate-50 border border-slate-200 rounded-full">
                   {currentInsight.categoryJa}
                 </span>
                 <span className="text-sm text-slate-500">
@@ -137,7 +135,7 @@ export default function InsightDetail() {
               <h1 className="text-4xl md:text-5xl font-bold text-slate-900 mb-4 leading-tight">
                 {currentInsight.title}
               </h1>
-              <div className="w-24 h-1.5 bg-gradient-to-r from-sky-500 to-emerald-500 rounded-full"></div>
+              <div className="w-24 h-0.5 bg-slate-300 rounded-full"></div>
             </motion.div>
 
             {/* 作者信息卡片（移动端显示） */}
@@ -148,12 +146,12 @@ export default function InsightDetail() {
               className="lg:hidden mb-8 bg-white rounded-xl p-6 shadow-sm border border-slate-200"
             >
               <div className="flex items-center space-x-4">
-                <div className="w-16 h-16 rounded-full bg-gradient-to-br from-sky-400 to-emerald-400 flex items-center justify-center text-white text-xl font-bold flex-shrink-0 overflow-hidden">
+                <div className="w-12 h-12 rounded-full bg-slate-100 border border-slate-200 flex items-center justify-center text-slate-600 text-sm font-bold flex-shrink-0">
                   {author.image ? (
                     <img
                       src={author.image}
                       alt={author.name}
-                      className="w-full h-full rounded-full object-cover"
+                      className="w-full h-full rounded-full object-cover grayscale-[0.3] hover:grayscale-0 transition-all duration-500"
                     />
                   ) : (
                     author.name.charAt(0)
@@ -171,10 +169,10 @@ export default function InsightDetail() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.4, delay: 0.2 }}
-              className="prose prose-slate max-w-none mb-12"
+              className="mb-12"
             >
-              <div className="bg-white rounded-xl p-8 md:p-10 shadow-sm border border-slate-200">
-                <div className="text-lg leading-relaxed text-slate-700 whitespace-pre-line">
+              <div className="bg-white rounded-lg p-8 md:p-10 border border-slate-200">
+                <div className="text-base leading-relaxed text-slate-700 whitespace-pre-line tracking-wide">
                   {currentInsight.content || currentInsight.excerpt}
                 </div>
               </div>
@@ -214,12 +212,12 @@ export default function InsightDetail() {
                   執筆者
                 </h3>
                 <div className="flex items-start space-x-4">
-                  <div className="w-20 h-20 rounded-full bg-gradient-to-br from-sky-400 to-emerald-400 flex items-center justify-center text-white text-2xl font-bold flex-shrink-0 overflow-hidden shadow-lg">
+                  <div className="w-16 h-16 rounded-full bg-slate-100 border-2 border-slate-200 flex items-center justify-center text-slate-600 text-base font-bold flex-shrink-0">
                     {author.image ? (
                       <img
                         src={author.image}
                         alt={author.name}
-                        className="w-full h-full rounded-full object-cover"
+                        className="w-full h-full rounded-full object-cover grayscale hover:grayscale-0 transition-all duration-500"
                       />
                     ) : (
                       author.name.charAt(0)
@@ -235,7 +233,7 @@ export default function InsightDetail() {
                       {author.specialty.slice(0, 3).map((skill, idx) => (
                         <span
                           key={idx}
-                          className="px-2.5 py-1 text-xs font-medium bg-slate-100 text-slate-700 rounded-md"
+                          className="px-2.5 py-1 text-xs font-medium bg-slate-50 text-slate-700 border border-slate-200 rounded-md"
                         >
                           {skill}
                         </span>
@@ -243,7 +241,7 @@ export default function InsightDetail() {
                     </div>
                     <button
                       onClick={() => setIsContactModalOpen(true)}
-                      className="mt-4 w-full px-4 py-2 bg-sky-600 text-white rounded-lg font-semibold hover:bg-sky-700 transition-colors text-sm"
+                      className="mt-4 w-full px-4 py-2 bg-slate-900 text-white rounded-lg font-semibold hover:bg-slate-800 transition-colors text-sm flex items-center justify-center leading-none"
                     >
                       このエキスパートに相談する
                     </button>
@@ -271,16 +269,14 @@ export default function InsightDetail() {
                         className="block group"
                       >
                         <div className="flex space-x-3">
-                          <div className="flex-shrink-0 w-16 h-16 rounded-lg bg-gradient-to-br from-slate-100 to-slate-200 flex items-center justify-center overflow-hidden">
-                            <div className="text-xl">📰</div>
-                          </div>
+                          <div className="flex-shrink-0 w-12 h-12 rounded bg-slate-50 border border-slate-200"></div>
                           <div className="flex-1 min-w-0">
                             <div className="flex items-center space-x-2 mb-1">
-                              <span className="text-xs font-semibold text-sky-600">
+                              <span className="text-xs font-semibold text-slate-700">
                                 {insight.categoryJa}
                               </span>
                             </div>
-                            <h4 className="text-sm font-bold text-slate-900 line-clamp-2 group-hover:text-sky-600 transition-colors mb-1">
+                            <h4 className="text-sm font-bold text-slate-900 line-clamp-2 group-hover:underline transition-colors mb-1 tracking-tight">
                               {insight.title}
                             </h4>
                             <p className="text-xs text-slate-500">
@@ -294,7 +290,7 @@ export default function InsightDetail() {
                   <Link
                     to="/insights"
                     onClick={() => window.scrollTo(0, 0)}
-                    className="block mt-4 text-center text-sm font-semibold text-sky-600 hover:text-sky-700"
+                    className="block mt-4 text-center text-sm font-semibold text-slate-700 hover:text-slate-900"
                   >
                     すべての記事を見る →
                   </Link>
@@ -306,19 +302,18 @@ export default function InsightDetail() {
                 initial={{ opacity: 0, x: 20 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.4, delay: 0.4 }}
-                className="bg-gradient-to-br from-sky-500 via-sky-600 to-emerald-600 rounded-xl p-6 text-white shadow-lg"
+                className="bg-slate-900 rounded-xl p-6 text-white shadow-lg"
               >
                 <div className="text-center mb-4">
-                  <div className="text-3xl mb-2">💬</div>
-                  <h3 className="font-bold text-lg mb-2">無料診断</h3>
-                  <p className="text-sm text-sky-50 leading-relaxed">
+                  <h3 className="font-bold text-lg mb-3">無料診断</h3>
+                  <p className="text-sm text-slate-300 leading-relaxed">
                     30分間の無料オンライン診断<br />
                     専門家がご対応いたします。
                   </p>
                 </div>
                 <button
                   onClick={() => setIsContactModalOpen(true)}
-                  className="block w-full text-center px-4 py-3 bg-white text-sky-600 rounded-lg font-bold hover:bg-slate-50 transition-all shadow-md hover:shadow-xl"
+                  className="block w-full px-4 py-3 bg-white text-slate-900 rounded-lg font-bold hover:bg-slate-50 transition-all shadow-md hover:shadow-xl flex items-center justify-center leading-none"
                 >
                   無料診断を予約する
                 </button>
